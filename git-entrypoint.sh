@@ -3,9 +3,13 @@
 trap "echo TRAPed signal" HUP INT QUIT TERM
 
 mkdir -p "$REPO_LOCAL"
+cd "$REPO_LOCAL"
 
-git -C "$REPO_LOCAL" pull || git clone "$REPO_REMOTE" "$REPO_LOCAL"
-
+git init
+git remote add origin "$REPO_REMOTE"
+git fetch
+git reset origin/"$REPO_BRANCH"
+git reset --hard HEAD
 
 if [ -z "$REPO_COMMIT" ]; then
     echo "you can set REPO_COMMIT to clone specific commit"
